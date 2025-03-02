@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif
+}
+
+p {
+    margin: 0
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    /* background-color: #e8eaf6; */ /* Removed background color */
+    padding: 35px;
+}
+
+.box-right {
+    padding: 30px 25px;
+    /* background-color: white; */ /* Removed background color */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box-shadow */
+}
+
+.box-left {
+    padding: 20px 20px;
+    /* background-color: white; */ /* Removed background color */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box-shadow */
+}
+
+.textmuted {
+    color: #7a7a7a
+}
+
+.bg-green {
+    background-color: #d4f8f2;
+    color: #06e67a;
+    padding: 3px 0;
+    display: inline;
+    border-radius: 25px;
+    font-size: 11px
+}
+
+.p-blue {
+    font-size: 14px;
+    color: #1976d2
+}
+
+.fas.fa-circle {
+    font-size: 12px
+}
+
+.p-org {
+    font-size: 14px;
+    color: #fbc02d
+}
+
+.h7 {
+    font-size: 15px
+}
+
+.h8 {
+    font-size: 12px
+}
+
+.h9 {
+    font-size: 10px
+}
+
+.bg-blue {
+    background-color: #dfe9fc9c;
+    border-radius: 5px
+}
+
+.form-control {
+    box-shadow: none !important
+}
+
+.card input::placeholder {
+    font-size: 14px
+}
+
+::placeholder {
+    font-size: 14px
+}
+
+input.card {
+    position: relative
+}
+
+.far.fa-credit-card {
+    position: absolute;
+    top: 10px;
+    padding: 0 15px
+}
+
+.fas,
+.far {
+    cursor: pointer
+}
+
+.cursor {
+    cursor: pointer
+}
+
+.btn.btn-primary {
+    box-shadow: none;
+    height: 40px;
+    padding: 11px
+}
+
+.bg.btn.btn-primary {
+    background-color: transparent;
+    border: none;
+    color: #1976d2
+}
+
+.bg.btn.btn-primary:hover {
+    color: #539ee9
+}
+
+#progressbar {
+    margin-bottom: 3vh;
+    overflow: hidden;
+    color: white;
+    padding-left: 0px;
+    margin-top: 3vh
+}
+
+#progressbar li {
+    list-style-type: none;
+    font-size: 0.8rem;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: white;
+}
+
+#progressbar #step1:before {
+    content: "";
+    color: white;
+    width: 20px;
+    height: 20px;
+    margin-left: 0px !important;
+}
+
+#progressbar #step2:before {
+    content: "";
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    margin-left: 32%;
+}
+
+#progressbar #step3:before {
+    content: "";
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    margin-right: 32% ; 
+}
+
+#progressbar #step4:before {
+    content: "";
+    color: rgb(151, 149, 149, 0.651);
+    width: 20px;
+    height: 20px;
+    margin-right: 0px !important;
+}
+
+#progressbar li:before {
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: rgb(151, 149, 149);
+    border-radius: 50%;
+    margin: auto;
+    z-index: -1;
+    margin-bottom: 1vh;
+}
+
+#progressbar li:after {
+    content: '';
+    height: 3px;
+    background: rgb(151, 149, 149, 0.651);
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    margin-bottom: 2vh;
+    top: 8px;
+    z-index: 1;
+}
+.progress-track{
+    padding: 0 8%;
+}
+#progressbar li:nth-child(2):after {
+    margin-right: auto;
+}
+
+#progressbar li:nth-child(1):after {
+    margin: auto;
+}
+
+#progressbar li:nth-child(3):after {
+    float: left;
+    width: 68%;
+}
+#progressbar li:nth-child(4):after {
+    margin-left: auto;
+    width: 132%;
+}
+
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: white;
+}
+
+@media(max-width:320px) {
+    .h8 {
+        font-size: 11px
+    }
+
+    .h7 {
+        font-size: 13px
+    }
+
+    ::placeholder {
+        font-size: 10px
+    }
+}
+
+.modal-body{
+    padding: 1rem;
+}
+
+#col {
+    display: flex; /* Use flexbox to align items horizontally */
+    align-items: center; /* Vertically center-align the items */
+    gap: 10px; /* Add spacing between the input and button */
+}
+
+#col input {
+    flex: 1; /* Allow the input to take available space */
+    max-width: 300px; /* Optional: Set a max width */
+}
+
+#clipboard {
+    display: flex; /* Ensure the button is a flex container */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    text-align: center; /* Center-align text if it's multi-line */
+    height: 40px; /* Ensure consistent height for alignment */
+    padding: 10px 20px; /* Add padding for button size */
+    box-shadow: none; /* Optional: Remove shadow */
+    cursor: pointer; /* Optional: Add pointer cursor */
+    white-space: nowrap; /* Prevent the text in the button from wrapping */
+}
