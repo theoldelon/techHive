@@ -40,14 +40,29 @@
                                         {{-- Hardcoded Rating --}}
                                         <div class="mt-2">
                                             <span class="text-warning">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
+                                                @php
+                                                    $averageRating = $job->reviews->avg('rating') ?? 0;
+                                                    $totalReviews = $job->reviews->count();
+                                                    $fullStars = floor($averageRating);
+                                                    $halfStar = ($averageRating - $fullStars) >= 0.5;
+                                                @endphp
+                                        
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $fullStars)
+                                                        <i class="fas fa-star"></i>
+                                                    @elseif ($halfStar && $i == ($fullStars + 1))
+                                                        <i class="fas fa-star-half-alt"></i>
+                                                    @else
+                                                        <i class="far fa-star"></i>
+                                                    @endif
+                                                @endfor
                                             </span>
-                                            <span class="text-muted ms-2">(4.3/5 based on 120 reviews)</span>
+                                            
+                                            <span class="text-muted ms-2">
+                                                ({{ number_format($averageRating, 1) }}/5 based on {{ $totalReviews }} reviews)
+                                            </span>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -215,56 +230,40 @@
                     </div>
                 </div>
 
-                
-
                 <div class="card shadow border-0 p-4 mt-4">
-                    <div class="job_sumary">
-                        <div class="summery_header pb-1 pt-4 ">
-                            <h3>Rating and Reviews</h3>
-                        </div>                    
-                            {{-- Hardcoded Reviews --}}
-                            <div class="mt-3">
-                                <h6 class="fw-bold">User Reviews:</h6>
-                                <ul class="list-unstyled">
-                                    <li class="border-bottom pb-2 mb-2">
-                                        <strong>John Doe</strong>
-                                        <span class="text-warning">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
-                                        <p class="mb-0">Great job opportunity! The hiring process was smooth.</p>
-                                    </li>
-                                    <li class="border-bottom pb-2 mb-2">
-                                        <strong>Jane Smith</strong>
-                                        <span class="text-warning">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
-                                        <p class="mb-0">Good work environment, but salary could be better.</p>
-                                    </li>
-                                    <li class="pb-2">
-                                        <strong>Michael Brown</strong>
-                                        <span class="text-warning">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                                        <p class="mb-0">Amazing company to work for. Highly recommended!</p>
-                                    </li>
-                                </ul>
-                            </div>
-
+                    <div class="job_summary">
+                        <div class="summary_header pb-1 pt-4">
+                            <h3 class="text-lg font-semibold">Rating and Reviews</h3>
+                        </div>
+                
+                        {{-- Display Reviews --}}
+                        <div class="mt-3">
+                            <h6 class="fw-bold text-gray-700">User Reviews:</h6>
+                            <ul class="list-none space-y-3 mt-2" id="review-list">
+                                @if($job->reviews->count() > 0)
+                                    @foreach($job->reviews as $review)
+                                        <li class="border-b pb-3">
+                                            <strong class="text-blue-600">{{ $review->user->name }}</strong>
+                                            <span class="text-yellow-500">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <i class="{{ $i <= $review->rating ? 'fas fa-star' : 'far fa-star' }}"></i>
+                                                @endfor
+                                            </span>
+                                            <p class="text-gray-600 mt-1">{{ $review->review }}</p>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="text-gray-500">No reviews yet.</li>
+                                @endif
+                            </ul>
+                        </div>
+                
+                    
                     </div>
                 </div>
-                        
+                
+
+
             </div>
         </div>
     </div>
@@ -274,71 +273,117 @@
 
 @section('customJs')
     <script type="text/javascript">
-function hireFreelancer(applicationId, jobId, freelancerId) {
-        // Debugging: log the values to ensure they are correct
-        console.log("Application ID:", applicationId);
-        console.log("Job ID:", jobId);
-        console.log("Freelancer ID:", freelancerId);
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            function hireFreelancer(applicationId, jobId, freelancerId) {
+                console.log("Application ID:", applicationId);
+                console.log("Job ID:", jobId);
+                console.log("Freelancer ID:", freelancerId);
 
-        if (confirm("Are you sure you want to hire this Freelancer?")) {
-            $.ajax({
-                url: '{{ route("hireFreelancer") }}',
-                type: 'POST',
-                data: {
-                    job_id: jobId,
-                    freelancer_id: freelancerId,
-                    application_id: applicationId,
-                    _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
-                },
-                dataType: 'json',
-                success: function(response) {
-                    // Check if the response is valid before taking action
-                    if(response.status) {
-                        alert(response.message); 
-                        window.location.reload(); // Reload the page on success
-                    } else {
-                        alert(response.message); // Alert the error message
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log("Error:", xhr.responseText); // Log error for debugging
-                    alert("An error occurred while hiring the freelancer.");
-                }
-            });
-        }
-    }
+                if (!confirm("Are you sure you want to hire this Freelancer?")) return;
 
-        function applyJob(id) {
-            if (confirm("Are you sure you want to apply for this Job?")) {
                 $.ajax({
-                    url: '{{ route("applyJob") }}',
-                    type: 'post',
+                    url: '{{ route("hireFreelancer") }}',
+                    type: 'POST',
                     data: {
-                        id: id,
-                        _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF Token
+                        job_id: jobId,
+                        freelancer_id: freelancerId,
+                        application_id: applicationId,
+                        _token: document.querySelector('meta[name="csrf-token"]').content
                     },
                     dataType: 'json',
-                    success: function(response) {
-                        window.location.href = "{{ url()->current() }}";
+                    success: function (response) {
+                        alert(response.message);
+                        if (response.status) location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                        alert("An error occurred while hiring the freelancer.");
                     }
                 });
             }
-        }
 
-        function saveTheJob(id) {
-            $.ajax({
-                url: '{{ route("saveTheJob") }}',
-                type: 'post',
-                data: {
-                    id: id,
-                    _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF Token
-                },
-                dataType: 'json',
-                success: function(response) {
-                    window.location.href = "{{ url()->current() }}";
-                }
-            });
-        }
+            function applyJob(id) {
+                if (!confirm("Are you sure you want to apply for this job?")) return;
 
+                $.ajax({
+                    url: '{{ route("applyJob") }}',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    dataType: 'json',
+                    success: function () {
+                        window.location.href = "{{ url()->current() }}";
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                    }
+                });
+            }
+
+            function saveTheJob(id) {
+                $.ajax({
+                    url: '{{ route("saveTheJob") }}',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    dataType: 'json',
+                    success: function () {
+                        window.location.href = "{{ url()->current() }}";
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                    }
+                });
+            }
+
+            // Handle Review Form Submission (with Error Handling)
+            let reviewForm = document.getElementById('review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    let formData = new FormData(this);
+                    let submitButton = reviewForm.querySelector("button");
+
+                    submitButton.textContent = "Submitting...";
+                    submitButton.disabled = true;
+
+                    fetch("{{ route('job.saveReview') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        submitButton.textContent = "Submit Review";
+                        submitButton.disabled = false;
+
+                        if (data.status) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert("Error: " + (data.message || JSON.stringify(data.errors)));
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        submitButton.textContent = "Submit Review";
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+
+            // Expose functions globally
+            window.hireFreelancer = hireFreelancer;
+            window.applyJob = applyJob;
+            window.saveTheJob = saveTheJob;
+        });
     </script>
 @endsection

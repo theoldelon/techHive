@@ -52,4 +52,9 @@ class Job extends Model
     {
         return $this->hasMany(Hire::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'job_id');
+    }
 }
