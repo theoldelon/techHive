@@ -256,14 +256,9 @@
                                     <li class="text-gray-500">No reviews yet.</li>
                                 @endif
                             </ul>
-                        </div>
-                
-                    
+                        </div>                
                     </div>
                 </div>
-                
-
-
             </div>
         </div>
     </div>

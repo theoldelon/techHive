@@ -195,11 +195,6 @@
         </li>
 
         <li><hr class="dropdown-divider"></li>
-
-        <!-- My Account Link -->
-        @if (Auth::user()->role == 'user' || Auth::user()->role == 'freelancer')
-        <li><a class="dropdown-item" href="{{ route('account.show', ['id' => Auth::user()->id]) }}"><i class="fas fa-user me-2"></i>My Account</a></li>
-        @endif
                 <!-- Admin Dashboard Link -->
                 @if (Auth::user()->role == 'admin')
                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
