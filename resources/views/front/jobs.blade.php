@@ -133,63 +133,71 @@
                                                         <span class="text-truncate me-0">
                                                             <i class="far fa-money-bill-alt text-primary me-2"></i>{{ $job->salary ?? 'Negotiable' }}
                                                         </span>
-                                                        @foreach($jobs as $job)
+            
+                                                        {{-- ✨ Rating section (only for THIS job) --}}
                                                         @if($job->reviews->isNotEmpty())
                                                             @php
-                                                                // Calculate the average rating
                                                                 $averageRating = round($job->reviews->avg('rating'), 1);
-                                                                $fullStars = floor($averageRating); // Number of full stars
-                                                                $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0; // Check if a half-star is needed
-                                                                $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+                                                                $fullStars = floor($averageRating);
+                                                                $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
+                                                                $emptyStars = 5 - ($fullStars + $halfStar);
                                                             @endphp
-                                                    
+            
                                                             <div class="flex items-center gap-2 mt-2">
                                                                 <div class="text-yellow-500">
-                                                                    @for ($i = 1; $i <= $fullStars; $i++)
-                                                                        <i class="fas fa-star"></i> <!-- Full Star -->
+                                                                    @for ($i = 0; $i < $fullStars; $i++)
+                                                                        <i class="fas fa-star"></i>
                                                                     @endfor
-                                                    
+            
                                                                     @if ($halfStar)
-                                                                        <i class="fas fa-star-half-alt"></i> <!-- Half Star -->
+                                                                        <i class="fas fa-star-half-alt"></i>
                                                                     @endif
-                                                    
-                                                                    @for ($i = 1; $i <= $emptyStars; $i++)
-                                                                        <i class="far fa-star"></i> <!-- Empty Star -->
+            
+                                                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                                                        <i class="far fa-star"></i>
                                                                     @endfor
                                                                 </div>
-                                                                <span class="text-gray-600 text-sm">({{ $averageRating }}/5 based on {{ $job->reviews->count() }} reviews)</span>
+                                                                <span class="text-gray-600 text-sm">
+                                                                    ({{ $averageRating }}/5 based on {{ $job->reviews->count() }} {{ Str::plural('review', $job->reviews->count()) }})
+                                                                </span>
                                                             </div>
                                                         @else
                                                             <p class="text-gray-500 mt-2">No reviews yet.</p>
                                                         @endif
-                                                    @endforeach
-                                                    
-
-                                                    
+                                                        {{-- ✨ End of Rating section --}}
+                                                        
                                                     </div>
-                                                    
                                                 </div>
-                    
+            
                                                 <!-- Apply Button and Deadline -->
                                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                                     <div class="d-flex mb-3">
-                                                        <a class="btn btn-light btn-square me-3" href="{{ route('jobDetail', $job->id) }}"><i class="far fa-heart text-primary"></i></a>
-                                                        <a class="btn btn-primary" href="{{ route('jobDetail', $job->id) }}">Apply Now</a>
+                                                        <a class="btn btn-light btn-square me-3" href="{{ route('jobDetail', $job->id) }}">
+                                                            <i class="far fa-heart text-primary"></i>
+                                                        </a>
+                                                        <a class="btn btn-primary" href="{{ route('jobDetail', $job->id) }}">
+                                                            Apply Now
+                                                        </a>
                                                     </div>
-                                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Deadline: {{ \Carbon\Carbon::parse($job->deadline)->format('d M, Y') }}</small>
+                                                    <small class="text-truncate">
+                                                        <i class="far fa-calendar-alt text-primary me-2"></i>
+                                                        Deadline: {{ \Carbon\Carbon::parse($job->deadline)->format('d M, Y') }}
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
-                    
+            
                                 <!-- Pagination and Job Count -->
                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                     <div>
-                                        <span class="text-muted font-light">Showing {{ $jobs->firstItem() }} to {{ $jobs->lastItem() }} of {{ $jobs->total() }} jobs</span>
+                                        <span class="text-muted font-light">
+                                            Showing {{ $jobs->firstItem() }} to {{ $jobs->lastItem() }} of {{ $jobs->total() }} jobs
+                                        </span>
                                     </div>
                                     <div>
-                                        {{ $jobs->links('pagination::bootstrap-5') }} <!-- Bootstrap pagination -->
+                                        {{ $jobs->links('pagination::bootstrap-5') }}
                                     </div>
                                 </div>
                             @else
@@ -199,6 +207,7 @@
                     </div>
                 </div>
             </div>
+            
              
             
         </div>
