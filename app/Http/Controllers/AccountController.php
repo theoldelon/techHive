@@ -273,7 +273,7 @@ class AccountController extends Controller
             'salary' => 'required',
             'location' => 'required|min:5|max:70',
             'description' => 'required',
-            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
             'company_name' => 'required|min:5|max:70',
         ];
 
@@ -353,7 +353,7 @@ class AccountController extends Controller
             'reference_id' => 'required|string|max:255',
             'bank_name' => 'nullable|string',
             'payment_method' => 'required|in:0,1,2', // Validate against expected options (e.g., 0 = Bank, 1 = PayPal, 2 = GCash)
-            'proof' => 'required|mimes:png,jpg,jpeg,webp|max:2048', // Ensure file is an image
+            'proof' => 'required|mimes:png,jpg,jpeg,webp|max:20480', // Ensure file is an image
         ]);
 
         // Create a new instance of the model
@@ -759,12 +759,12 @@ class AccountController extends Controller
 
         // Validate the incoming files including profile_picture
         $request->validate([
-            'valid_id' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
-            'selfie_with_id' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
-            'business_permit' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
-            'dti_registration' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
-            'sec_registration' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
-            'profile_picture' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048', // Added validation for profile picture
+            'valid_id' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480',
+            'selfie_with_id' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480',
+            'business_permit' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480',
+            'dti_registration' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480',
+            'sec_registration' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480',
+            'profile_picture' => 'nullable|mimes:png,jpg,jpeg,webp|max:20480', // Added validation for profile picture
         ], [
             'valid_id.mimes' => 'Valid ID must be a file of type: png, jpg, jpeg, webp.',
             'valid_id.max' => 'Valid ID must not exceed 2MB.',
