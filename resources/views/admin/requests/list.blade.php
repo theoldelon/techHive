@@ -120,7 +120,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="10" class="text-center text-danger">Payment Transaction Not Found!</td>
+                                                <td colspan="10" class="text-center text-danger">No Request Transaction Yet!</td>
                                             </tr>
                                         @endif
                                     </tbody> 
