@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('proof')->nullable();
             $table->integer('status')->default(0);
             $table->integer('isPaid')->default(0);
-            $table->timestamp('request_date');
             $table->timestamps();
         });
     }
