@@ -104,6 +104,9 @@
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#reviewModal">
                                                                     <i class="fa fa-star" aria-hidden="true"></i> Submit a Review</button>
+                                                                    <li><a href="{{ route('freelancer.hire-details', $jobApplication->id) }}" class="dropdown-item">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                                                    </li>   
                                                                 <li><a class="dropdown-item" href="{{ route('jobDetail', $jobApplication->job_id) }}">
                                                                     <i class="fa fa-briefcase" aria-hidden="true"></i> Visit</a>
                                                                 </li>
