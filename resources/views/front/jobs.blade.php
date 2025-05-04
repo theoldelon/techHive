@@ -176,7 +176,7 @@
                                                             <i class="far fa-heart text-primary"></i>
                                                         </a>
                                                         <a class="btn btn-primary" href="{{ route('jobDetail', $job->id) }}">
-                                                            Apply Now
+                                                            View Details
                                                         </a>
                                                     </div>
                                                     <small class="text-truncate">

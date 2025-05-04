@@ -202,12 +202,10 @@
                                     </div>
                                     <form method="POST" action="{{ route('account.sendPayment') }}" class="p-3" enctype="multipart/form-data">
                                         @csrf
-                                        <!-- Hidden input for hire_id with fallback value -->
+                                    
+                                        <!-- Hidden Fields -->
                                         <input type="hidden" name="hire_id" value="{{ $hire ? $hire->id : '' }}">
-                                        
                                         <input type="hidden" name="employer_id" value="{{ $hire ? $hire->employer->id : '' }}">
-                                        
-                                        <!-- Fixed typo in freelancer_id -->
                                         <input type="hidden" name="freelancer_id" value="{{ $hire ? $hire->freelancer->id : '' }}">
                                     
                                         <div class="mb-4 mt-4">
@@ -215,39 +213,39 @@
                                             <label for="send_to" class="text-center form-label fw-bold h7">Send To</label>
                                             <input type="text" value="Gcash - Dan Rikster Dizon Abangan" name="send_to_name" id="send_to_name" class="form-control text-dark mb-2 text-center" readonly>
                                             <input type="text" value="09920628141" name="send_to_number" id="send_to_number" class="form-control text-dark text-center mb-2" readonly>
-                                            <small class="text-danger">Note: A Service Fee of 1% will be applied to all transactions.</small>
+                                            <small class="text-danger">Note: A Service Fee of 5% will be applied to all transactions.</small>
                                         </div>
                                     
                                         <div class="mb-4 text-center">
                                             <label for="amount_payable" class="form-label fw-bold h7">Breakdown</label>
                                         </div>
                                     
+                                        <!-- Job Salary -->
                                         <div class="mb-4">
-                                            <!-- Amount Payable -->
                                             <label for="job_salary" class="form-label fw-bold h7">Job Salary</label>
-                                            <input type="text" value="{{ $job->salary }}" name="job_salary" id="job_salary" class="form-control text-dark text-center" readonly>
+                                            <input type="text" value="{{ number_format((float)$job->salary, 2) }}" name="job_salary" id="job_salary" class="form-control text-dark text-center" readonly>
                                         </div>
                                     
+                                        <!-- Service Fee (5%) -->
                                         <div class="mb-4">
-                                            <!-- Amount Payable -->
                                             <label for="service_fee" class="form-label fw-bold h7">Service Fee</label>
-                                            <input type="text" value="{{ $job->salary * .05 }}" name="service_fee" id="service_fee" class="form-control text-dark text-center" readonly>
+                                            <input type="text" value="{{ number_format((float)$job->salary * 0.05, 2) }}" name="service_fee" id="service_fee" class="form-control text-dark text-center" readonly>
                                         </div>
                                     
+                                        <!-- Total Amount Payable -->
                                         <div class="mb-4">
-                                            <!-- Amount Payable -->
                                             <label for="amount_payable" class="form-label fw-bold h7">Amount Payable</label>
-                                            <input type="text" value="{{ $job->salary + $job->salary * .05 }}" name="amount_payable" id="amount_payable" class="form-control text-dark text-center" readonly>
+                                            <input type="text" value="{{ number_format((float)$job->salary + ((float)$job->salary * 0.05), 2) }}" name="amount_payable" id="amount_payable" class="form-control text-dark text-center" readonly>
                                         </div>
                                     
+                                        <!-- Payment ID -->
                                         <div class="mb-4">
-                                            <!-- Payment ID -->
                                             <label for="reference_id" class="form-label fw-bold h7">Payment ID</label>
                                             <input type="text" name="reference_id" id="reference_id" class="form-control text-dark">
                                         </div>
                                     
+                                        <!-- Payment Method -->
                                         <div class="mb-4">
-                                            <!-- Payment Method -->
                                             <label for="payment_method" class="form-label fw-bold h7">Payment Method</label>
                                             <select name="payment_method" id="payment_method" class="form-select text-dark">
                                                 <option value="2" @if(old('payment_method') == 2) selected @endif>Gcash</option>
@@ -255,23 +253,25 @@
                                                 <option value="0" @if(old('payment_method') == 0) selected @endif>Bank Transfer</option>
                                             </select>
                                         </div>
-                                        
+                                    
+                                        <!-- Bank Name -->
                                         <div class="mb-4">
-                                            <!-- Bank Name (only for Bank Transfer) -->
                                             <label for="bank_name" class="form-label fw-bold h7">If Bank Transfer - Bank Name</label>
                                             <input type="text" name="bank_name" id="bank_name" class="form-control text-dark">
                                         </div>
                                     
+                                        <!-- Transaction Image -->
                                         <div class="mb-4">
-                                            <!-- Transaction Image -->
                                             <label for="proof" class="form-label fw-bold h7">Transaction Image</label>
                                             <input type="file" name="proof" id="proof" class="form-control text-dark">
                                         </div>
                                     
+                                        <!-- Submit Button -->
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                     </form>
+                                    
                                                                 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
